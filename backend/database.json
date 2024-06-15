@@ -1,0 +1,54 @@
+{
+  "clients": [
+    {
+      "account_number": 1,
+      "last_name": "Иванов",
+      "first_name": "Иван",
+      "middle_name": "Иванович",
+      "birth_date": "1980-01-01",
+      "inn": "123456789012",
+      "responsible_person": "Петров Петр Петрович",
+      "status": "Не в работе"
+    },
+    {
+      "account_number": 2,
+      "last_name": "Петров",
+      "first_name": "Петр",
+      "middle_name": "Петрович",
+      "birth_date": "1985-05-05",
+      "inn": "234567890123",
+      "responsible_person": "Сидоров Сидор Сидорович",
+      "status": "Не в работе"
+    },
+    {
+      "account_number": 3,
+      "last_name": "Сидоров",
+      "first_name": "Сидор",
+      "middle_name": "Сидорович",
+      "birth_date": "1990-10-10",
+      "inn": "345678901234",
+      "responsible_person": "Иванов Иван Иванович",
+      "status": "Не в работе"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "full_name": "Петров Петр Петрович",
+      "username": "pppetrov",
+      "password": "password1"
+    },
+    {
+      "id": 2,
+      "full_name": "Сидоров Сидор Сидорович",
+      "username": "sssidov",
+      "password": "password2"
+    },
+    {
+      "id": 3,
+      "full_name": "Иванов Иван Иванович",
+      "username": "iiiivanov",
+      "password": "password3"
+    }
+  ]
+}
