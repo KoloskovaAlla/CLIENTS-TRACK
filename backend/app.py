@@ -4,9 +4,8 @@ from psycopg2 import Error
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:3001"}})
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
-# Функция для подключения к базе данных PostgreSQL
 def connect_to_db():
     try:
         conn = psycopg2.connect(

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-export const Login = ({ setFullName }) => {
+export const Login = () => {
+  const [fullName, setFullName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -15,9 +16,9 @@ export const Login = ({ setFullName }) => {
         body: JSON.stringify({ username, password }),
       });
       const data = await response.json();
-      if (response.ok) {
+      if (response.ok) {        
         setFullName(data.user.full_name);
-        console.log('запрос отправлен')
+        console.log('Запрос отправлен');
       } else {
         alert('Неверный логин или пароль');
       }
@@ -28,18 +29,22 @@ export const Login = ({ setFullName }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Username:
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-      </label>
-      <br />
-      <label>
-        Password:
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      </label>
-      <br />
-      <button type="submit">Login</button>
-    </form>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Username:
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+        </label>
+        <br />
+        <label>
+          Password:
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </label>
+        <br />
+        <button type="submit">Login</button>
+      </form>
+      {fullName && <p>Welcome, {fullName}!</p>}
+    </div>
   );
-}
+};
+
