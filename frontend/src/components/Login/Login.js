@@ -1,8 +1,8 @@
 import classes from './Login.module.scss';
 import { useState } from 'react';
 
-export const Login = () => {
-  const [fullName, setFullName] = useState('');
+export const Login = ({ fullName, setFullName }) => {
+  
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
