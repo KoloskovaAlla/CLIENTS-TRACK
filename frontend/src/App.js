@@ -2,12 +2,15 @@
 // import { HomePage } from 'pages/HomePage'
 // import { PodcastsPage } from 'pages/PodcastsPage';
 // import { PodcastPage } from 'pages/PodcastPage';
-import { Login } from 'components';
+import { useState } from 'react';
+import { Login, ClientTable } from 'components';
 
 export const App = () => {
+  const [fullName, setFullName] = useState('');
   return (
     <>
-      <Login />
+      <Login fullName={fullName} setFullName={setFullName} />
+      <ClientTable fullName={fullName} />
     </>
   );
 };
