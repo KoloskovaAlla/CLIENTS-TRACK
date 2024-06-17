@@ -1,89 +1,69 @@
-import{ useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 export const ClientTable = ({ fullName }) => {
   const [clients, setClients] = useState([]);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchClients = async () => {
-      try {
-        const response = await fetch(`http://127.0.0.1:5000/clients?responsible=${fullName}`);
-        const data = await response.json();
-        if (response.ok) {
-          setClients(data.clients);
-        } else {
-          setError(data.message);
-        }
-      } catch (error) {
-        setError('Ошибка при загрузке клиентов');
-      }
+      const response = await fetch(`http://127.0.0.1:5000/clients?responsible=${encodeURIComponent(fullName)}`);
+      const data = await response.json();
+      setClients(data);
     };
 
-    fetchClients();
+    if (fullName) {
+      fetchClients();
+    }
   }, [fullName]);
 
-  const handleStatusChange = async (clientId, newStatus) => {
+  const handleStatusChange = async (client, status) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/clients/${clientId}`, {
+      await fetch(`http://127.0.0.1:5000/clients/${client.account_number}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ status: newStatus }),
+        body: JSON.stringify({ status }),
       });
 
-      if (response.ok) {
-        setClients(clients.map(client => 
-          client.id === clientId ? { ...client, status: newStatus } : client
-        ));
-      } else {
-        const data = await response.json();
-        alert(data.message);
-      }
+      setClients((prevClients) =>
+        prevClients.map((c) =>
+          c.account_number === client.account_number ? { ...c, status } : c
+        )
+      );
     } catch (error) {
-      console.error('Ошибка при изменении статуса:', error);
-      alert('Произошла ошибка при изменении статуса');
+      console.error('Ошибка при обновлении статуса:', error);
     }
   };
+      console.log(clients)
+      clients.map((client) => (
+      
+        console.log(`${client.last_name} ${client.first_name} ${client.patronymic}`)
 
-  if (error) {
-    return <p>{error}</p>;
-  }
+       ));
+      
 
   return (
-    <div>
-      <h2>Клиенты</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Имя</th>
-            <th>Email</th>
-            <th>Телефон</th>
-            <th>Статус</th>
-            <th>Изменить статус</th>
+    <table>
+      <thead>
+        <tr>
+          <th>Имя</th>
+          <th>Статус</th>
+          <th>Действие</th>
+        </tr>
+      </thead>
+      <tbody>
+        {clients.map((client) => (
+          <tr key={client.account_number}>
+            <td>{`${client.last_name} ${client.first_name} ${client.patronymic}`}</td>
+            <td>{client.status}</td>
+            <td>
+              <button onClick={() => handleStatusChange(client, 'В работе')}>В работе</button>
+              <button onClick={() => handleStatusChange(client, 'Отказ')}>Отказ</button>
+              <button onClick={() => handleStatusChange(client, 'Сделка закрыта')}>Сделка закрыта</button>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          {clients.map(client => (
-            <tr key={client.id}>
-              <td>{client.name}</td>
-              <td>{client.email}</td>
-              <td>{client.phone}</td>
-              <td>{client.status}</td>
-              <td>
-                <select 
-                  value={client.status} 
-                  onChange={(e) => handleStatusChange(client.id, e.target.value)}
-                >
-                  <option value="В работе">В работе</option>
-                  <option value="Отказ">Отказ</option>
-                  <option value="Сделка закрыта">Сделка закрыта</option>
-                </select>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+        ))}
+      </tbody>
+    </table>
   );
 };
