@@ -1,3 +1,4 @@
+import classes from './Login.module.scss';
 import { useState } from 'react';
 
 export const Login = () => {
@@ -28,22 +29,31 @@ export const Login = () => {
     }
   };
 
+  const onUsernameChange = (event) => setUsername(event.target.value);
+  const onPasswordChange = (event) => setPassword(event.target.value);
+
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <label>
+      <form className={classes.form} onSubmit={handleSubmit}>
+        <label className={classes.userName}>
           Username:
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-        </label>
-        <br />
-        <label>
+          <input 
+            type="text" 
+            value={username} 
+            onChange={onUsernameChange} 
+          />
+        </label>        
+        <label className={classes.password}>
           Password:
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </label>
-        <br />
-        <button type="submit">Login</button>
+          <input 
+            type="password" 
+            value={password} 
+            onChange={onPasswordChange} 
+          />
+        </label>        
+        <button className={classes.submit} type="submit">Login</button>
       </form>
-      {fullName && <p>Welcome, {fullName}!</p>}
+      {fullName && <p>Добро пожаловать, {fullName}!</p>}
     </div>
   );
 };
