@@ -5,9 +5,17 @@ export const ClientTable = ({ fullName }) => {
 
   useEffect(() => {
     const fetchClients = async () => {
-      const response = await fetch(`http://127.0.0.1:5000/clients?responsible=${encodeURIComponent(fullName)}`);
-      const data = await response.json();
-      setClients(data);
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/clients?responsible=${encodeURIComponent(fullName)}`);
+        if (response.ok) {
+          const data = await response.json();
+          setClients(data);
+        } else {
+          console.error('Ошибка при получении клиентов:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Ошибка при получении клиентов:', error);
+      }
     };
 
     if (fullName) {
@@ -17,7 +25,7 @@ export const ClientTable = ({ fullName }) => {
 
   const handleStatusChange = async (client, status) => {
     try {
-      await fetch(`http://127.0.0.1:5000/clients/${client.account_number}`, {
+      const response = await fetch(`http://127.0.0.1:5000/clients/${client.account_number}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -25,22 +33,19 @@ export const ClientTable = ({ fullName }) => {
         body: JSON.stringify({ status }),
       });
 
-      setClients((prevClients) =>
-        prevClients.map((c) =>
-          c.account_number === client.account_number ? { ...c, status } : c
-        )
-      );
+      if (response.ok) {
+        setClients((prevClients) =>
+          prevClients.map((c) =>
+            c.account_number === client.account_number ? { ...c, status } : c
+          )
+        );
+      } else {
+        console.error('Ошибка при обновлении статуса:', response.statusText);
+      }
     } catch (error) {
       console.error('Ошибка при обновлении статуса:', error);
     }
   };
-      console.log(clients)
-      clients.map((client) => (
-      
-        console.log(`${client.last_name} ${client.first_name} ${client.patronymic}`)
-
-       ));
-      
 
   return (
     <table>

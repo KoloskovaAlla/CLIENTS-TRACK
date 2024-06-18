@@ -39,7 +39,6 @@ def login():
 def get_clients():
     responsible = request.args.get('responsible')
     cursor = conn.cursor()
-    cursor.execute("SET client_encoding TO 'UTF8'")
     cursor.execute("SELECT account_number, last_name, first_name, patronymic, birth_date, inn, responsible_person, status FROM clients WHERE responsible_person = %s", (responsible,))
     clients = cursor.fetchall()
     cursor.close()
@@ -51,7 +50,7 @@ def get_clients():
             'last_name': client[1],
             'first_name': client[2],
             'patronymic': client[3],
-            'birth_date': client[4],
+            'birth_date': client[4].isoformat() if client[4] else None,
             'inn': client[5],
             'responsible_person': client[6],
             'status': client[7]
@@ -63,7 +62,6 @@ def get_clients():
 def update_client_status(account_number):
     status = request.json.get('status')
     cursor = conn.cursor()
-    cursor.execute("SET client_encoding TO 'UTF8'")
     cursor.execute(
         "UPDATE clients SET status = %s WHERE account_number = %s RETURNING account_number, last_name, first_name, patronymic, birth_date, inn, responsible_person, status",
         (status, account_number)
@@ -78,7 +76,7 @@ def update_client_status(account_number):
             'last_name': updated_client[1],
             'first_name': updated_client[2],
             'patronymic': updated_client[3],
-            'birth_date': updated_client[4],
+            'birth_date': updated_client[4].isoformat() if updated_client[4] else None,
             'inn': updated_client[5],
             'responsible_person': updated_client[6],
             'status': updated_client[7]
