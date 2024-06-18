@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import classes from './Login.module.scss';
 
 export const Login = ({ setFullName }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const onUsernameChange = (event) => setUsername(event.target.value);
+  const onPasswordChange = (event) => setPassword(event.target.value);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
       const response = await fetch('http://127.0.0.1:5000/login', {
         method: 'POST',
@@ -26,9 +28,6 @@ export const Login = ({ setFullName }) => {
       alert('Произошла ошибка при попытке входа');
     }
   };
-
-   const onUsernameChange = (event) => setUsername(event.target.value);
-  const onPasswordChange = (event) => setPassword(event.target.value);
 
   return (
     <div>
@@ -52,8 +51,7 @@ export const Login = ({ setFullName }) => {
           />
         </label>        
         <button className={classes.submit} type="submit">Login</button>
-      </form>
-      {/* {fullName && <p>Добро пожаловать, {fullName}!</p>} */}
+      </form>      
     </div>
   );
 };
