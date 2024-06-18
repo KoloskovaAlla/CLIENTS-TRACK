@@ -1,8 +1,7 @@
+import { useState, useEffect } from 'react';
 import classes from './Login.module.scss';
-import { useState } from 'react';
 
-export const Login = ({ fullName, setFullName }) => {
-  
+export const Login = ({ setFullName }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -17,9 +16,8 @@ export const Login = ({ fullName, setFullName }) => {
         body: JSON.stringify({ username, password }),
       });
       const data = await response.json();
-      if (response.ok) {        
+      if (response.ok) {
         setFullName(data.user.full_name);
-        console.log('Запрос отправлен');
       } else {
         alert('Неверный логин или пароль');
       }
@@ -29,7 +27,7 @@ export const Login = ({ fullName, setFullName }) => {
     }
   };
 
-  const onUsernameChange = (event) => setUsername(event.target.value);
+   const onUsernameChange = (event) => setUsername(event.target.value);
   const onPasswordChange = (event) => setPassword(event.target.value);
 
   return (
@@ -55,8 +53,7 @@ export const Login = ({ fullName, setFullName }) => {
         </label>        
         <button className={classes.submit} type="submit">Login</button>
       </form>
-      {fullName && <p>Добро пожаловать, {fullName}!</p>}
+      {/* {fullName && <p>Добро пожаловать, {fullName}!</p>} */}
     </div>
   );
 };
-
