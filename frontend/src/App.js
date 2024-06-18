@@ -4,16 +4,13 @@ import { Login, ClientTable } from 'components';
 export const App = () => {
   const [fullName, setFullName] = useState('');
 
-  return (
+  if (!fullName) return (
+    <Login setFullName={setFullName} />
+  )
+  else return (
     <div>
-      {!fullName ? (
-        <Login setFullName={setFullName} />
-      ) : (
-        <div>
-          <p>Добро пожаловать, {fullName}!</p>
-          <ClientTable fullName={fullName} />
-        </div>
-      )}
+      <p>{`Добро пожаловать, ${fullName}!`}</p>
+      <ClientTable fullName={fullName} />
     </div>
   );
 };
